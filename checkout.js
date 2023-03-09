@@ -97,6 +97,7 @@
         $('.wc-csabpo-edit-shipping-address').on('click', function(e){
             wc_csabpo_status = 0;
             $('form.checkout').unblock();
+            $('form.checkout').removeClass('processing');
             $('.wc-csabpo-overlay').remove();
         });
         $('.wc-csabpo-finalize-order').on('click', function(e){

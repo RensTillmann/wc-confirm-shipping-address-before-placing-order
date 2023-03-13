@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       WC - Confirm shipping address before placing order
  * Description:       Let customers double check their shipping address before placing their order on checkout page. Helps to prevent incorrectly entered shipping addresses.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author URI:        github.com/renstillmann
  * Author:            Rens Tillmann
  * Text Domain:       wc-csabpo
@@ -19,7 +19,7 @@ if(!defined('ABSPATH')){
 
 if(!class_exists('WC_CSABPO')) :
     final class WC_CSABPO {
-        public $version = '1.0.0';
+        public $version = '1.0.1';
         public $slug = 'wc_csabpo';
         public $common_i18n;
         protected static $_instance = null;
@@ -281,29 +281,41 @@ if(!class_exists('WC_CSABPO')) :
                 foreach($fieldset as $key => $field){
                     $type = sanitize_title(isset($field['type']) ? $field['type'] : 'text');
                     if(isset($_POST[$key]) && ''!==$_POST[$key]){
-                        $value = wp_unslash($_POST[$key]);
-                    }elseif(isset($field['default']) && 'checkbox'!==$type && !$form_was_shown){
-                        $value = $field['default'];
-                    }else{
-                        $value = '';
-                    }
-                    if(''!==$value){
                         switch($type){
                             case 'checkbox':
                                 $value = 1;
                                 break;
                             case 'multiselect':
-                                $value = implode(', ', wc_clean($value));
+                                $value = implode(', ', wc_clean(wp_unslash($_POST[$key])));
                                 break;
                             case 'textarea':
-                                $value = wc_sanitize_textarea($value);
+                                $value = wc_sanitize_textarea(wp_unslash($_POST[$key]));
                                 break;
                             case 'password':
                                 break;
                             default:
-                                $value = wc_clean($value);
+                                $value = wc_clean(wp_unslash($_POST[$key]));
                                 break;
                         }
+                    }elseif(isset($field['default']) && $field['default']!=='' && 'checkbox'!==$type && !$form_was_shown){
+                        switch($type){
+                            case 'checkbox':
+                                $value = 1;
+                                break;
+                            case 'multiselect':
+                                $value = implode(', ', wc_clean(wp_unslash($field['default'])));
+                                break;
+                            case 'textarea':
+                                $value = wc_sanitize_textarea(wp_unslash($field['default']));
+                                break;
+                            case 'password':
+                                break;
+                            default:
+                                $value = wc_clean(wp_unslash($field['default']));
+                                break;
+                        }
+                    }else{
+                        $value = '';
                     }
                     $data[$key] = apply_filters('woocommerce_process_checkout_' . $type . '_field', apply_filters('woocommerce_process_checkout_field_' . $key, $value));
                 }

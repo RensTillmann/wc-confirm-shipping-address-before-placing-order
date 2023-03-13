@@ -55,7 +55,6 @@
         });
     });
     function show_confirm_dialog(){
-        if(window.wc_csabpo_confirm && window.wc_csabpo_confirm===true) return true;
         var input, parent, label, html = '', i, nodes;
         if(wc_csabpo_checkout_i18n.modal.title!=='') html += '<h3>'+wc_csabpo_checkout_i18n.modal.title+'</h3>';
         if(wc_csabpo_checkout_i18n.modal.desc!=='') html += '<p>'+wc_csabpo_checkout_i18n.modal.desc+'</p>';
@@ -105,7 +104,6 @@
             if($('input[name="wc_csabpo_confirm_shipping_details"]').is(":checked")){
                 // Submit form
                 wc_csabpo_status = 4;
-                window.wc_csabpo_confirm = true;
                 $('.wc-csabpo-confirm').removeClass('wc-csabpo-error');
                 $('.wc-csabpo-overlay').remove();
                 $('form.checkout').trigger('submit');

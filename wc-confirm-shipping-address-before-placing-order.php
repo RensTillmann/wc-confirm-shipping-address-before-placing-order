@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       WC - Confirm shipping address before placing order
  * Description:       Let customers double check their shipping address before placing their order on checkout page. Helps to prevent incorrectly entered shipping addresses.
- * Version:           1.0.1
+ * Version:           1.0.0
  * Author URI:        github.com/renstillmann
  * Author:            Rens Tillmann
  * Text Domain:       wc-csabpo
@@ -19,7 +19,7 @@ if(!defined('ABSPATH')){
 
 if(!class_exists('WC_CSABPO')) :
     final class WC_CSABPO {
-        public $version = '1.0.1';
+        public $version = '1.0.0';
         public $slug = 'wc_csabpo';
         public $common_i18n;
         protected static $_instance = null;

@@ -103,7 +103,7 @@ if(!class_exists('WC_CSABPO')) :
         }
         public function validate_checkout(&$data, &$errors){
             $this->validate_posted_data($data, $errors);
-            if(isset($data['terms']) && $data['terms']===0){
+            if(isset($data['terms-field']) && $data['terms-field']===1 && isset($data['terms']) && $data['terms']===0){
                 $errors->add('terms', __('Please read and accept the terms and conditions to proceed with your order.', 'woocommerce'));
             }
             if(WC()->cart->needs_shipping()){
@@ -268,6 +268,7 @@ if(!class_exists('WC_CSABPO')) :
         public function get_posted_data(){
             $data = array(
                 'terms' => (int) isset($_POST['terms']),
+                'terms-field' => (int) isset($_POST['terms-field']),
                 'createaccount' => (int) ($this->is_registration_enabled() ? !empty($_POST['createaccount']) : false),
                 'payment_method' => isset($_POST['payment_method']) ? wc_clean(wp_unslash($_POST['payment_method'])) : '',
                 'shipping_method' => isset($_POST['shipping_method']) ? wc_clean(wp_unslash($_POST['shipping_method'])) : '',
